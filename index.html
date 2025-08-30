@@ -1,292 +1,70 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Portafolio interactivo con Three.js, GSAP y TailwindCSS" />
-    <title>Portafolio 3D — Sitio Interactivo</title>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Portafolio moderno y 3D con Tailwind, GSAP y Three.js." />
+<title>Portafolio 3D — Interactivo</title>
 
-    <!-- TailwindCSS (CDN) -->
-    <script src="https://cdn.tailwindcss.com"></script>
 
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
-            colors: { primary: '#7c3aed', ink: '#0b1220' },
-            boxShadow: { smooth: '0 12px 40px rgba(2,6,23,0.45)' },
-          },
-        },
-      };
-    </script>
+<!-- Tailwind (CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: { colors: { primary: '#7c3aed', ink: '#0b1220' }, }, }, };
+</script>
 
-    <!-- GSAP -->
-    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
-    <!-- Three.js (core) - we will import examples as modules in script.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<!-- GSAP -->
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
-    <!-- Lucide icons -->
-    <script defer src="https://unpkg.com/lucide@latest"></script>
 
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="preconnect" href="https://picsum.photos" crossorigin />
-    <link rel="icon" href="./assets/favicon.png" />
+<!-- Three.js (module for OrbitControls) -->
+<script type="module" defer src="./script.js"></script>
 
-    <meta name="theme-color" content="#071028" />
-  </head>
-  <body class="bg-ink text-zinc-100 antialiased selection:bg-primary/25 selection:text-white">
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:m-3 focus:p-3 focus:bg-zinc-800 focus:rounded-xl">Saltar al contenido</a>
 
-    <!-- NAV -->
-    <header class="fixed top-0 inset-x-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-ink/30 bg-ink/60 border-b border-white/6">
-      <nav class="max-w-7xl mx-auto px-4 md:px-6">
-        <div class="flex items-center justify-between h-16">
-          <a href="#" class="flex items-center gap-3 focus:outline-none">
-            <span class="w-9 h-9 rounded-lg bg-gradient-to-tr from-primary to-fuchsia-500 shadow-smooth"></span>
-            <span class="text-sm md:text-base font-semibold">MiPortafolio3D</span>
-          </a>
-          <button id="nav-toggle" class="md:hidden p-2 rounded-lg border border-white/6 hover:bg-white/4 focus:outline-none" aria-label="Abrir menú">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-          <ul id="nav-menu" class="hidden md:flex items-center gap-2">
-            <li><a data-nav href="#hero" class="nav-link">Inicio</a></li>
-            <li><a data-nav href="#about" class="nav-link">Sobre mí</a></li>
-            <li><a data-nav href="#projects" class="nav-link">Proyectos</a></li>
-            <li><a data-nav href="#contact" class="nav-link">Contacto</a></li>
-          </ul>
-        </div>
-        <ul id="nav-menu-mobile" class="md:hidden hidden flex-col gap-2 py-3">
-          <li><a data-nav href="#hero" class="nav-link block py-2">Inicio</a></li>
-          <li><a data-nav href="#about" class="nav-link block py-2">Sobre mí</a></li>
-          <li><a data-nav href="#projects" class="nav-link block py-2">Proyectos</a></li>
-          <li><a data-nav href="#contact" class="nav-link block py-2">Contacto</a></li>
-        </ul>
-      </nav>
-    </header>
+<!-- Icons -->
+<script defer src="https://unpkg.com/lucide@latest"></script>
 
-    <main id="main" class="relative">
 
-      <!-- HERO: canvas 3D interactivo -->
-      <section id="hero" class="relative min-h-[92vh] pt-24 overflow-hidden">
-        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+<link rel="stylesheet" href="./style.css" />
+<link rel="preconnect" href="https://picsum.photos" crossorigin />
+</head>
+<body class="bg-ink text-zinc-100 font-sans antialiased">
+<a class="sr-only focus:not-sr-only" href="#main">Saltar al contenido</a>
 
-        <div class="relative max-w-7xl mx-auto px-4 md:px-6">
-          <div class="min-h-[70vh] flex items-center">
-            <div class="w-full grid lg:grid-cols-2 gap-8 items-center">
-              <div>
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
-                  Experiencias<br />
-                  <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-fuchsia-500 to-sky-400">interactivas 3D</span>
-                </h1>
-                <p class="mt-5 max-w-2xl text-zinc-300 text-lg md:text-xl leading-relaxed">
-                  Diseño y desarrollo con microinteracciones, objetos 3D y animaciones que comunican y sorprenden sin sacrificar rendimiento.
-                </p>
-                <div class="mt-8 flex flex-wrap gap-3">
-                  <a href="#projects" class="btn-primary">Ver proyectos</a>
-                  <a href="#contact" class="btn-secondary">Contactar</a>
-                </div>
-              </div>
 
-              <div class="relative hidden lg:block">
-                <div class="bg-white/3 p-4 rounded-3xl border border-white/6 shadow-smooth">
-                  <h4 class="text-sm text-zinc-200 font-semibold mb-2">Selector 3D</h4>
-                  <p class="text-xs text-zinc-300 mb-3">Interactúa con los objetos en el fondo y haz click en una tarjeta para resaltarlos.</p>
-                  <div id="project-mini-list" class="grid grid-cols-3 gap-3">
-                    <button class="mini-proj focus:outline-none" data-index="0" aria-label="Resaltar proyecto 1">
-                      <img src="https://picsum.photos/120/80?random=21" alt="mini proyecto" class="w-full h-20 object-cover rounded-lg" loading="lazy" />
-                    </button>
-                    <button class="mini-proj focus:outline-none" data-index="1" aria-label="Resaltar proyecto 2">
-                      <img src="https://picsum.photos/120/80?random=22" alt="mini proyecto" class="w-full h-20 object-cover rounded-lg" loading="lazy" />
-                    </button>
-                    <button class="mini-proj focus:outline-none" data-index="2" aria-label="Resaltar proyecto 3">
-                      <img src="https://picsum.photos/120/80?random=23" alt="mini proyecto" class="w-full h-20 object-cover rounded-lg" loading="lazy" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<header class="fixed top-0 left-0 right-0 z-50 bg-ink/70 backdrop-blur border-b border-white/5">
+<div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+<a href="#" class="flex items-center gap-3">
+<span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-fuchsia-500 shadow-lg"></span>
+<span class="font-semibold">MiPortafolio</span>
+</a>
+<nav class="hidden md:flex items-center gap-4">
+<a class="nav-link" href="#hero">Inicio</a>
+<a class="nav-link" href="#about">Sobre</a>
+<a class="nav-link" href="#projects">Proyectos</a>
+<a class="nav-link" href="#contact">Contacto</a>
+</nav>
+<button id="menu-btn" class="md:hidden p-2 rounded-lg border border-white/10">☰</button>
+</div>
+<div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
+<a class="block py-2 nav-link" href="#hero">Inicio</a>
+<a class="block py-2 nav-link" href="#about">Sobre</a>
+<a class="block py-2 nav-link" href="#projects">Proyectos</a>
+<a class="block py-2 nav-link" href="#contact">Contacto</a>
+</div>
+</header>
 
-        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent"></div>
-      </section>
 
-      <!-- ABOUT -->
-      <section id="about" class="section">
-        <div class="container">
-          <div class="grid lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <h2 class="section-title">Sobre mí</h2>
-              <p class="section-text">
-                Front-end y creador de experiencias digitales. Me apasiona combinar diseño y código para crear interfaces memorables con Three.js y animaciones suaves.
-              </p>
-              <ul class="mt-6 space-y-2 text-zinc-300">
-                <li class="flex items-start gap-3"><span class="check">✓</span><span>Accesibilidad y rendimiento.</span></li>
-                <li class="flex items-start gap-3"><span class="check">✓</span><span>Animaciones con propósito.</span></li>
-                <li class="flex items-start gap-3"><span class="check">✓</span><span>Integración 3D optimizada.</span></li>
-              </ul>
-            </div>
-            <div class="relative">
-              <img src="https://picsum.photos/900/600?random=11" width="900" height="600" alt="Fotografía abstracta" class="rounded-3xl shadow-smooth ring-1 ring-white/8 w-full h-auto" loading="lazy" />
-            </div>
-          </div>
-        </div>
-      </section>
+<main id="main" class="pt-20">
 
-      <!-- PROJECTS -->
-      <section id="projects" class="section">
-        <div class="container">
-          <div class="flex items-end justify-between gap-6 mb-10">
-            <div>
-              <h2 class="section-title">Proyectos</h2>
-              <p class="section-text">Proyectos destacables con integraciones 3D y microinteracciones.</p>
-            </div>
-            <a href="#contact" class="btn-ghost hidden sm:inline-flex">¿Colaboramos?</a>
-          </div>
 
-          <div id="projects-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Cada tarjeta tendrá data-index que conecta con un objeto 3D -->
-            <article class="card group" tabindex="0" data-index="0" aria-labelledby="p1-title">
-              <div class="card-media">
-                <img src="https://picsum.photos/900/600?random=2" width="900" height="600" alt="Proyecto UI/UX" loading="lazy" class="card-img" />
-                <div class="card-overlay"></div>
-                <div class="card-badge">UI/UX</div>
-              </div>
-              <div class="card-body">
-                <h3 id="p1-title" class="card-title">Dashboard Analítico</h3>
-                <p class="card-desc">Panel con animaciones y filtros en tiempo real.</p>
-              </div>
-            </article>
+<!-- HERO: Canvas 3D + UI overlay -->
+<section id="hero" class="relative h-[92vh] flex items-center overflow-hidden">
+<div id="webgl-root" class="absolute inset-0"> <!-- three.js mounts here --> </div>
 
-            <article class="card group" tabindex="0" data-index="1" aria-labelledby="p2-title">
-              <div class="card-media">
-                <img src="https://picsum.photos/900/600?random=3" width="900" height="600" alt="Landing interactiva" loading="lazy" class="card-img" />
-                <div class="card-overlay"></div>
-                <div class="card-badge">Landing</div>
-              </div>
-              <div class="card-body">
-                <h3 id="p2-title" class="card-title">Landing Interactiva</h3>
-                <p class="card-desc">Transiciones con GSAP y contenido optimizado.</p>
-              </div>
-            </article>
 
-            <article class="card group" tabindex="0" data-index="2" aria-labelledby="p3-title">
-              <div class="card-media">
-                <img src="https://picsum.photos/900/600?random=4" width="900" height="600" alt="Tienda minimalista" loading="lazy" class="card-img" />
-                <div class="card-overlay"></div>
-                <div class="card-badge">E-Commerce</div>
-              </div>
-              <div class="card-body">
-                <h3 id="p3-title" class="card-title">Tienda Minimal</h3>
-                <p class="card-desc">Catálogo rápido con atención a detalles.</p>
-              </div>
-            </article>
-
-            <!-- Más tarjetas (opcional) -->
-            <article class="card group" tabindex="0" data-index="3" aria-labelledby="p4-title">
-              <div class="card-media">
-                <img src="https://picsum.photos/900/600?random=5" width="900" height="600" alt="Sitio corporativo" loading="lazy" class="card-img" />
-                <div class="card-overlay"></div>
-                <div class="card-badge">Corporate</div>
-              </div>
-              <div class="card-body">
-                <h3 id="p4-title" class="card-title">Sitio Corporativo</h3>
-                <p class="card-desc">Arquitectura clara y accesible.</p>
-              </div>
-            </article>
-
-            <article class="card group" tabindex="0" data-index="4" aria-labelledby="p5-title">
-              <div class="card-media">
-                <img src="https://picsum.photos/900/600?random=6" width="900" height="600" alt="Blog técnico" loading="lazy" class="card-img" />
-                <div class="card-overlay"></div>
-                <div class="card-badge">Blog</div>
-              </div>
-              <div class="card-body">
-                <h3 id="p5-title" class="card-title">Blog Técnico</h3>
-                <p class="card-desc">Markdown, SEO y tipografía legible.</p>
-              </div>
-            </article>
-
-            <article class="card group" tabindex="0" data-index="5" aria-labelledby="p6-title">
-              <div class="card-media">
-                <img src="https://picsum.photos/900/600?random=7" width="900" height="600" alt="Experiencia 3D" loading="lazy" class="card-img" />
-                <div class="card-overlay"></div>
-                <div class="card-badge">3D</div>
-              </div>
-              <div class="card-body">
-                <h3 id="p6-title" class="card-title">Experiencia 3D</h3>
-                <p class="card-desc">Three.js con foco en rendimiento y accesibilidad.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section id="contact" class="section">
-        <div class="container">
-          <h2 class="section-title">Contacto</h2>
-          <p class="section-text">¿Tienes un proyecto? Déjame un mensaje y te responderé pronto.</p>
-
-          <form id="contact-form" class="mt-8 grid md:grid-cols-2 gap-5" novalidate>
-            <div class="col-span-2 md:col-span-1">
-              <label for="name" class="form-label">Nombre</label>
-              <input id="name" name="name" type="text" required autocomplete="name" class="form-input" placeholder="Tu nombre" aria-required="true" />
-              <p class="form-error" data-error-for="name" aria-live="polite"></p>
-            </div>
-            <div class="col-span-2 md:col-span-1">
-              <label for="email" class="form-label">Email</label>
-              <input id="email" name="email" type="email" required autocomplete="email" class="form-input" placeholder="tunombre@email.com" />
-              <p class="form-error" data-error-for="email" aria-live="polite"></p>
-            </div>
-            <div class="col-span-2">
-              <label for="message" class="form-label">Mensaje</label>
-              <textarea id="message" name="message" rows="5" required class="form-input resize-y" placeholder="Cuéntame tu idea"></textarea>
-              <p class="form-error" data-error-for="message" aria-live="polite"></p>
-            </div>
-            <div class="col-span-2 flex items-center justify-between gap-4">
-              <div class="flex items-center gap-2 text-sm text-zinc-400">
-                <input id="privacy" name="privacy" type="checkbox" class="size-4 rounded border-white/20 bg-transparent" required />
-                <label for="privacy">Acepto el tratamiento de mis datos para contactar.</label>
-              </div>
-              <button type="submit" class="btn-primary">
-                <span class="inline-flex items-center gap-2">
-                  <i data-lucide="send" class="size-4" aria-hidden="true"></i>
-                  Enviar
-                </span>
-              </button>
-            </div>
-            <p id="form-status" class="col-span-2 text-sm text-zinc-300 mt-1" role="status" aria-live="polite"></p>
-          </form>
-        </div>
-      </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-white/8">
-      <div class="max-w-7xl mx-auto px-4 md:px-6 py-8 text-sm text-zinc-400 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p>&copy; <span id="year"></span> MiPortafolio3D</p>
-        <nav aria-label="Enlaces de pie de página">
-          <ul class="flex items-center gap-4">
-            <li><a href="#about" class="hover:text-white">Sobre mí</a></li>
-            <li><a href="#projects" class="hover:text-white">Proyectos</a></li>
-            <li><a href="#contact" class="hover:text-white">Contacto</a></li>
-          </ul>
-        </nav>
-      </div>
-    </footer>
-
-    <noscript>
-      <div style="padding:1rem; background:#071028; color:#e5e7eb; text-align:center;">
-        Esta web usa JavaScript para la experiencia 3D. Funcionalidad básica disponible sin JS.
-      </div>
-    </noscript>
-
-    <!-- Script principal (módulo para importar ejemplos de Three.js) -->
-    <script type="module" src="./script.js"></script>
-  </body>
+<div class="relative z-10 max-w-6xl mx-auto px-4">
 </html>
