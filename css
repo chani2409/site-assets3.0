@@ -1,13 +1,64 @@
-/* Animaciones personalizadas */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* style.css */
+:root {
+  color-scheme: dark;
 }
 
-.animate-fade-in {
-  animation: fadeIn 1s ease-out forwards;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.animate-fade-in-delayed {
-  animation: fadeIn 1.5s ease-out forwards;
+html, body {
+  height: 100%;
+}
+
+@keyframes scroll-dot {
+  0% { transform: translate(-50%, 0); opacity: 1; }
+  70% { transform: translate(-50%, 18px); opacity: 0; }
+  100% { transform: translate(-50%, 18px); opacity: 0; }
+}
+.animate-scroll-dot { animation: scroll-dot 1.6s infinite; }
+
+.nav-link.active {
+  color: white !important;
+  background: color(display-p3 0.8 0.95 0.9 / 0.12);
+  outline: none;
+}
+
+#hero-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.project-card {
+  transform-style: preserve-3d;
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.project-card:focus-visible {
+  outline: 2px solid #7cf2d4;
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px; height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #2e3a7d, #1c224a);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-track {
+  background: #0f1226;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll-dot { animation: none; }
+  .project-card,
+  a,
+  img {
+    transition: none !important;
+  }
 }
