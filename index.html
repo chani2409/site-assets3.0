@@ -1,70 +1,104 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Portafolio moderno y 3D con Tailwind, GSAP y Three.js." />
-<title>Portafolio 3D — Interactivo</title>
-
-
-<!-- Tailwind (CDN) -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = { theme: { extend: { colors: { primary: '#7c3aed', ink: '#0b1220' }, }, }, };
-</script>
-
-
-<!-- GSAP -->
-<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
-
-<!-- Three.js (module for OrbitControls) -->
-<script type="module" defer src="./script.js"></script>
-
-
-<!-- Icons -->
-<script defer src="https://unpkg.com/lucide@latest"></script>
-
-
-<link rel="stylesheet" href="./style.css" />
-<link rel="preconnect" href="https://picsum.photos" crossorigin />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio 3D Moderno</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-ink text-zinc-100 font-sans antialiased">
-<a class="sr-only focus:not-sr-only" href="#main">Saltar al contenido</a>
+<body class="bg-black text-white overflow-x-hidden">
+  <!-- Navbar -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-black/70 backdrop-blur-lg">
+    <nav class="container mx-auto flex justify-between items-center py-4 px-6">
+      <a href="#hero" class="text-2xl font-bold tracking-wide">MiPortafolio</a>
+      <ul class="flex space-x-6">
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#projects" class="nav-link">Proyectos</a></li>
+        <li><a href="#contact" class="nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <!-- Hero con Canvas 3D -->
+  <section id="hero" class="relative h-screen flex items-center justify-center">
+    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full"></canvas>
+    <div class="relative z-10 text-center px-6">
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-4 animate-fade-in">
+        Bienvenido a mi mundo 3D
+      </h1>
+      <p class="text-lg md:text-2xl text-gray-300 mb-6 animate-fade-in-delayed">
+        Portafolio interactivo con animaciones y objetos 3D.
+      </p>
+      <a href="#projects"
+         class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full text-white font-medium hover:scale-110 transition-transform duration-300">
+         Ver Proyectos
+      </a>
+    </div>
+  </section>
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-ink/70 backdrop-blur border-b border-white/5">
-<div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-<a href="#" class="flex items-center gap-3">
-<span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-fuchsia-500 shadow-lg"></span>
-<span class="font-semibold">MiPortafolio</span>
-</a>
-<nav class="hidden md:flex items-center gap-4">
-<a class="nav-link" href="#hero">Inicio</a>
-<a class="nav-link" href="#about">Sobre</a>
-<a class="nav-link" href="#projects">Proyectos</a>
-<a class="nav-link" href="#contact">Contacto</a>
-</nav>
-<button id="menu-btn" class="md:hidden p-2 rounded-lg border border-white/10">☰</button>
-</div>
-<div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
-<a class="block py-2 nav-link" href="#hero">Inicio</a>
-<a class="block py-2 nav-link" href="#about">Sobre</a>
-<a class="block py-2 nav-link" href="#projects">Proyectos</a>
-<a class="block py-2 nav-link" href="#contact">Contacto</a>
-</div>
-</header>
+  <!-- About -->
+  <section id="about" class="py-24 container mx-auto px-6">
+    <h2 class="text-4xl font-bold mb-6">Sobre mí</h2>
+    <p class="text-gray-300 max-w-2xl">
+      Soy un desarrollador apasionado por crear experiencias digitales modernas, 
+      interactivas y atractivas. Me encanta combinar diseño, animación y programación 
+      para construir sitios web dinámicos y memorables.
+    </p>
+  </section>
 
+  <!-- Projects -->
+  <section id="projects" class="py-24 bg-gray-900 px-6">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold mb-10">Proyectos</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="group relative overflow-hidden rounded-2xl shadow-lg">
+          <img src="https://picsum.photos/600/400?random=1" alt="Proyecto 1"
+               class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+          <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+            <span class="text-lg font-semibold">Proyecto 1</span>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-2xl shadow-lg">
+          <img src="https://picsum.photos/600/400?random=2" alt="Proyecto 2"
+               class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+          <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+            <span class="text-lg font-semibold">Proyecto 2</span>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-2xl shadow-lg">
+          <img src="https://picsum.photos/600/400?random=3" alt="Proyecto 3"
+               class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+          <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+            <span class="text-lg font-semibold">Proyecto 3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<main id="main" class="pt-20">
+  <!-- Contact -->
+  <section id="contact" class="py-24 container mx-auto px-6">
+    <h2 class="text-4xl font-bold mb-6">Contacto</h2>
+    <form class="grid gap-6 max-w-xl">
+      <input type="text" placeholder="Nombre" required
+             class="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-purple-500" />
+      <input type="email" placeholder="Email" required
+             class="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-purple-500" />
+      <textarea placeholder="Mensaje" rows="5" required
+                class="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-purple-500"></textarea>
+      <button type="submit"
+              class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full text-white font-medium hover:scale-110 transition-transform duration-300">
+        Enviar
+      </button>
+    </form>
+  </section>
 
+  <!-- Footer -->
+  <footer class="py-6 bg-black/80 text-center text-gray-400 text-sm">
+    © 2025 Mi Portafolio 3D - Todos los derechos reservados
+  </footer>
 
-<!-- HERO: Canvas 3D + UI overlay -->
-<section id="hero" class="relative h-[92vh] flex items-center overflow-hidden">
-<div id="webgl-root" class="absolute inset-0"> <!-- three.js mounts here --> </div>
-
-
-<div class="relative z-10 max-w-6xl mx-auto px-4">
+  <script type="module" src="script.js"></script>
+</body>
 </html>
